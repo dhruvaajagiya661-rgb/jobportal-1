@@ -10,8 +10,8 @@
                 <h1 class="display-4 fw-bold mb-4">Find Your Dream <span class="text-primary">Internship</span> & Job Today</h1>
                 <p class="lead text-secondary mb-5">Connect with top companies and startups. Build your career with the most trusted internship and job portal.</p>
                 <div class="d-flex gap-3">
-                    <a href="{% url 'job_list' %}" class="btn btn-primary-custom btn-lg">Browse Jobs</a>
-                    <a href="{% url 'register_recruiter' %}" class="btn btn-outline-primary btn-lg border-2">Post a Job</a>
+                    <a href="/api/v1/jobs/" class="btn btn-primary-custom btn-lg">Browse Jobs</a>
+                    <a href="/api/v1/auth/register/" class="btn btn-outline-primary btn-lg border-2">Post a Job</a>
                 </div>
                 <div class="mt-5 d-flex align-items-center gap-4">
                     <div class="d-flex -space-x-2">
@@ -129,7 +129,7 @@
                 <h2 class="fw-bold">Latest Internships</h2>
                 <p class="text-secondary mb-0">Fresh opportunities for students and graduates</p>
             </div>
-            <a href="{% url 'internship_list' %}" class="btn btn-outline-primary fw-bold">View All Internships</a>
+            <a href="/api/v1/internships/" class="btn btn-outline-primary fw-bold">View All Internships</a>
         </div>
         <div class="row g-4">
             {% for intern in featured_internships %}
@@ -163,7 +163,7 @@
                 <h2 class="fw-bold">Featured Job Postings</h2>
                 <p class="text-secondary mb-0">Build your future with world-class companies</p>
             </div>
-            <a href="{% url 'job_list' %}" class="btn btn-outline-primary fw-bold">View All Jobs</a>
+            <a href="/api/v1/jobs/" class="btn btn-outline-primary fw-bold">View All Jobs</a>
         </div>
         <div class="row g-4">
             {% for job in featured_jobs %}

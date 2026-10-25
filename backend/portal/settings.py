@@ -14,6 +14,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(os.path.join(BASE_DIR, ".env"), override=True)
 
+
+# Build stamp, baked into the image by the Dockerfile. It is echoed back in the
+# X-API-Build response header (portal.middleware.APIVersionMiddleware), which is
+# the only reliable way to tell from the outside *which* build is answering:
+# a header reading "dev" means the container predates this stamp and is
+# therefore running older code than the repository.
+def _build_version():
+    env_value = os.getenv("BUILD_VERSION", "").strip()
+    if env_value:
+        return env_value
+    try:
+        stamp = (BASE_DIR / "build_stamp.txt").read_text(encoding="utf-8").strip()
+    except OSError:
+        return "dev"
+    return stamp or "dev"
+
+
+BUILD_VERSION = _build_version()
+
 # DEBUG defaults to False so that a deployment which forgets to set it fails
 # closed rather than exposing tracebacks and settings to the public internet.
 DEBUG = os.getenv("DEBUG", "False") == "True"
@@ -300,6 +319,7 @@ elif DATABASE_URL and not os.getenv("DB_HOST"):
             "PORT": str(_db_url.port or 5432),
             "OPTIONS": {
                 "sslmode": parse_qs(_db_url.query).get("sslmode", ["prefer"])[0],
+                "channel_binding": parse_qs(_db_url.query).get("channel_binding", ["prefer"])[0],
             },
         }
     }

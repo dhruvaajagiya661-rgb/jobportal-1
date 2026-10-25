@@ -201,7 +201,7 @@ class CORSCustomHeaders:
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; "
                 "font-src 'self' https://fonts.gstatic.com; "
                 "img-src 'self' data: https:; "
-                "connect-src 'self' https://portal-web-1f60.onrender.com wss://portal-web-1f60.onrender.com"
+                "connect-src 'self' https://internshipportal-web-latest.onrender.com wss://internshipportal-web-latest.onrender.com"
             )
 
         return response
