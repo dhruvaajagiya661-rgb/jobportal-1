@@ -53,18 +53,19 @@ const Navbar: React.FC = () => {
   // Close dropdowns when clicking outside of them.
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        notifRef.current &&
-        !notifRef.current.contains(event.target as Node) &&
-        userMenuRef.current &&
-        !userMenuRef.current.contains(event.target as Node)
-      ) {
-        closeMenus();
+      const target = event.target as Node;
+      // Close the notification dropdown if the click landed outside it.
+      if (notifOpen && notifRef.current && !notifRef.current.contains(target)) {
+        setNotifOpen(false);
+      }
+      // Close the user menu if the click landed outside it.
+      if (userMenuOpen && userMenuRef.current && !userMenuRef.current.contains(target)) {
+        setUserMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [closeMenus]);
+  }, [notifOpen, userMenuOpen]);
 
   // Close dropdowns on navigation.
   useEffect(() => {

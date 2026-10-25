@@ -43,17 +43,20 @@ const Home: React.FC = () => {
   });
 
   const [heroJob, setHeroJob] = useState<Job | null>(null);
+  const [heroLoading, setHeroLoading] = useState(true);
   const [featuredJobs, setFeaturedJobs] = useState<Job[]>([]);
   const [featuredInternships, setFeaturedInternships] = useState<Internship[]>([]);
   const [stats, setStats] = useState<PlatformStats | null>(null);
 
   useEffect(() => {
-    jobsAPI.list({ ordering: '-created_at' }).then(r => {
+    // Use the featured endpoint (same as internships) — leaner than the full
+    // paginated list and semantically correct for the landing page.
+    jobsAPI.featured().then(r => {
       const raw = r.data;
       const jobs = Array.isArray(raw) ? raw : Array.isArray(raw?.results) ? raw.results : [];
       if (jobs.length > 0) setHeroJob(jobs[Math.floor(Math.random() * jobs.length)]);
       setFeaturedJobs(jobs.slice(0, 6));
-    }).catch(() => {});
+    }).catch(() => {}).finally(() => setHeroLoading(false));
 
     internshipsAPI.featured().then(r => {
       const raw = r.data;
@@ -80,7 +83,24 @@ const Home: React.FC = () => {
         accent="internship & job."
         subtitle="Connect with top companies and startups. Build your career with the most trusted internship and job portal."
         aside={
-          heroJob ? (
+          heroLoading ? (
+            <div className="panel-dark p-7">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="skeleton w-14 h-14 rounded-2xl flex-shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="skeleton h-5 w-3/4" />
+                  <div className="skeleton h-4 w-1/2" />
+                </div>
+              </div>
+              <div className="flex gap-2 mb-5">
+                <div className="skeleton h-6 w-20 rounded-full" />
+                <div className="skeleton h-6 w-24 rounded-full" />
+              </div>
+              <div className="skeleton h-4 w-full mb-2" />
+              <div className="skeleton h-4 w-4/5 mb-6" />
+              <div className="skeleton h-11 w-full rounded-xl" />
+            </div>
+          ) : heroJob ? (
             <div className="panel-dark p-7 hover:border-white/20 transition-all duration-300">
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-14 h-14 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-2xl flex items-center justify-center shrink-0">

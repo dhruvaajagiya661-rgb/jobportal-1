@@ -99,8 +99,12 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
       }
 
       const proto = window.location.protocol === 'https:' ? 'wss' : 'ws';
+      // wsBaseUrl() may carry the /api suffix when derived from VITE_API_BASE.
+      // WebSocket routes live at /ws/ (not /api/ws/), so strip any /api tail.
+      const wsBase = (wsBaseUrl() || `${proto}://${window.location.host}`)
+        .replace(/\/api\/?$/, '');
       const ws = new WebSocket(
-        `${wsBaseUrl() || `${proto}://${window.location.host}`}/ws/notifications/?token=${token}`
+        `${wsBase}/ws/notifications/?token=${token}`
       );
       socketRef.current = ws;
 
