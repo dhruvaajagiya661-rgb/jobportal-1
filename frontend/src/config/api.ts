@@ -6,7 +6,7 @@
  *
  * When the frontend and backend deploy separately (Vercel SPA + Render API),
  * set VITE_API_BASE to the backend origin at build time, e.g.
- *   VITE_API_BASE=https://portal-web-1f60.onrender.com/api
+ *   VITE_API_BASE=https://internshipportal-web-latest.onrender.com/api
  * Relative paths would otherwise resolve against the Vercel origin, where no
  * Django lives — and Vercel cannot proxy websockets at all, so the websocket
  * base needs the same treatment.
